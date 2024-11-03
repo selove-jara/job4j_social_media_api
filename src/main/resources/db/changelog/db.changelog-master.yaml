@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - include:
+      file: "db/changelog/scripts/001_ddl_create_users_table.sql"
+  - include:
+      file: "db/changelog/scripts/002_ddl_create_post_table.sql"
+  - include:
+      file: "db/changelog/scripts/003_ddl_create_table_files.sql"
+  - include:
+      file: "db/changelog/scripts/004_ddl_create_table_post_file.sql"
+  - include:
+      file: "db/changelog/scripts/005_ddl_create_table_messages.sql"
+  - include:
+      file: "db/changelog/scripts/006_ddl_create_table_subscriptions.sql"
