@@ -597,3 +597,6 @@ Caused by: org.h2.mvstore.MVStoreException: The write format 3 is larger than th
 	at org.h2.mvstore.MVStore$Builder.open(MVStore.java:4082)
 	at org.h2.mvstore.db.Store.<init>(Store.java:136)
 	... 54 more
+2024-11-04 15:49:20.066872+04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "DATABASECHANGELOGLOCK" not found (this database is empty); SQL statement:
+SELECT COUNT(*) FROM DATABASECHANGELOGLOCK [42104-224]
