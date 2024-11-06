@@ -30,7 +30,7 @@ class SubscriptionRepositoryTest {
     public void whenSaveSubscriptionThenFindById() {
         var follower = userRepository.save(new User(0, "Follower", "follower@test.com", "pass", "UTC"));
         var following = userRepository.save(new User(0, "Following", "following@test.com", "pass", "UTC"));
-        var subscription = new Subscription(0, follower, following, LocalDateTime.now());
+        var subscription = new Subscription(0, follower, following, LocalDateTime.now(), false, false);
         subscriptionRepository.save(subscription);
 
         var actualSubscription = subscriptionRepository.findById(subscription.getId());
@@ -43,7 +43,7 @@ class SubscriptionRepositoryTest {
     public void whenSaveSubscriptionAndDeleteThenNotFound() {
         var follower = userRepository.save(new User(0, "Follower", "follower@test.com", "pass", "UTC"));
         var following = userRepository.save(new User(0, "Following", "following@test.com", "pass", "UTC"));
-        var subscription = new Subscription(0, follower, following, LocalDateTime.now());
+        var subscription = new Subscription(0, follower, following, LocalDateTime.now(), false, false);
         subscriptionRepository.save(subscription);
 
         subscriptionRepository.deleteById(subscription.getId());
