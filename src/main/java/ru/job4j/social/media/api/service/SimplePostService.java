@@ -5,6 +5,7 @@ import ru.job4j.social.media.api.model.Post;
 import ru.job4j.social.media.api.model.User;
 import ru.job4j.social.media.api.repository.PostRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -18,7 +19,7 @@ public class SimplePostService implements PostService {
 
 
     @Override
-    public void create(Post post) {
+    public void save(Post post) {
         postRepository.save(post);
     }
 
@@ -40,5 +41,29 @@ public class SimplePostService implements PostService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean update(Post post) {
+        if (postRepository.existsById(post.getId())) {
+            postRepository.save(post);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public Optional<Post> findById(int id) {
+        return postRepository.findById(id);
+    }
+
+    @Override
+    public List<Post> findAll() {
+        return (List<Post>) postRepository.findAll();
+    }
+
+    @Override
+    public boolean deleteById(int id) {
+        return postRepository.deletePostById(id) > 0;
     }
 }
