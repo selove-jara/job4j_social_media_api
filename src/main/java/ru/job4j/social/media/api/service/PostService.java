@@ -2,6 +2,7 @@ package ru.job4j.social.media.api.service;
 
 
 import org.springframework.transaction.annotation.Transactional;
+import ru.job4j.social.media.api.dto.UserDTO;
 import ru.job4j.social.media.api.model.*;
 
 import java.util.List;
@@ -28,4 +29,7 @@ public interface PostService {
 
     @Transactional
     boolean deleteById(int id);
+
+    @Transactional
+    List<UserDTO> getPostsByUserId(List<Integer> userIds);
 }

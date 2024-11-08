@@ -38,4 +38,6 @@ public interface PostRepository extends ListCrudRepository<Post, Integer> {
             + "JOIN Subscription s ON p.user.id = s.following.id "
             + "WHERE s.follower.id = :userId ORDER BY p.created DESC")
     Page<Post> findPostsByFollowers(@Param("userId") int userId, Pageable pageable);
+
+    List<Post> findByUserIdIn(List<Integer> userIds);
 }

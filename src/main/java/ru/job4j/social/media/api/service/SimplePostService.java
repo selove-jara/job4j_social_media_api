@@ -1,12 +1,12 @@
 package ru.job4j.social.media.api.service;
 
 import org.springframework.stereotype.Service;
+import ru.job4j.social.media.api.dto.UserDTO;
 import ru.job4j.social.media.api.model.Post;
 import ru.job4j.social.media.api.model.User;
 import ru.job4j.social.media.api.repository.PostRepository;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class SimplePostService implements PostService {
@@ -65,5 +65,19 @@ public class SimplePostService implements PostService {
     @Override
     public boolean deleteById(int id) {
         return postRepository.deletePostById(id) > 0;
+    }
+
+    @Override
+    public List<UserDTO> getPostsByUserId(List<Integer> userIds) {
+        Map<Integer, UserDTO> userMap = new HashMap<>();
+
+        postRepository.findByUserIdIn(userIds).forEach(post -> {
+            int userId = post.getUser().getId();
+            userMap.computeIfAbsent(userId, id ->
+                    new UserDTO(userId, post.getUser().getFullName(), new ArrayList<>()
+            )).getPosts().add(post);
+        });
+
+        return new ArrayList<>(userMap.values());
     }
 }
