@@ -1,5 +1,6 @@
 package ru.job4j.social.media.api.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +12,7 @@ import ru.job4j.social.media.api.service.UserService;
 
 import java.util.List;
 
+@Tag(name = "UsersController", description = "UsersController management APIs")
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/users")
