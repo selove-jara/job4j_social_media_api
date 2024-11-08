@@ -1,7 +1,9 @@
 package ru.job4j.social.media.api.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,6 +21,10 @@ public class Post {
 
     private int id;
 
+    @NotBlank(message = "Название не может быть пустым")
+    @Length(min = 6,
+            max = 15,
+            message = "Название должно быть не менее 6 и не более 15 символов")
     private String title;
 
     private String description;

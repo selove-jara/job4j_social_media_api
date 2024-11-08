@@ -37,7 +37,7 @@ class PostRepositoryTest {
         var image = new PostImage(0, "Image1", "/images/image1");
         var user = userRepository.save(
                 new User(0, "user1", "test1@test.com", "test1", "UTC"));
-        var post = new Post(0, "Post", "Description", LocalDateTime.now(), user, List.of(image));
+        var post = new Post(0, "Post123", "Description", LocalDateTime.now(), user, List.of(image));
         postRepository.save(post);
         var actualPost = postRepository.findById(post.getId());
         assertThat(actualPost).isPresent();
@@ -48,7 +48,7 @@ class PostRepositoryTest {
     public void whenSavePostAndDeleteThenNotFound() {
         var user = userRepository.save(
                 new User(0, "user1", "test1@test.com", "test1", "UTC"));
-        var post = new Post(0, "Post", "Description", LocalDateTime.now(), user,  Collections.emptyList());
+        var post = new Post(0, "Post123", "Description", LocalDateTime.now(), user,  Collections.emptyList());
         postRepository.save(post);
         postRepository.deleteById(post.getId());
         var actualPost = postRepository.findById(post.getId());

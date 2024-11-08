@@ -1,6 +1,7 @@
 package ru.job4j.social.media.api.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,6 +29,7 @@ public class Message {
     @JoinColumn(name = "receiver_id", nullable = false)
     private User receiver;
 
+    @NotBlank(message = "Сообщение не может быть пустым")
     private String message;
 
     private LocalDateTime sentAt;
