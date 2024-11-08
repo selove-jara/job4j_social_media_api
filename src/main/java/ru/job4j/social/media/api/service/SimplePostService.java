@@ -7,6 +7,8 @@ import ru.job4j.social.media.api.model.User;
 import ru.job4j.social.media.api.repository.PostRepository;
 
 import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Service
 public class SimplePostService implements PostService {
@@ -69,15 +71,11 @@ public class SimplePostService implements PostService {
 
     @Override
     public List<UserDTO> getPostsByUserId(List<Integer> userIds) {
-        Map<Integer, UserDTO> userMap = new HashMap<>();
-
-        postRepository.findByUserIdIn(userIds).forEach(post -> {
-            int userId = post.getUser().getId();
-            userMap.computeIfAbsent(userId, id ->
-                    new UserDTO(userId, post.getUser().getFullName(), new ArrayList<>()
-            )).getPosts().add(post);
-        });
-
-        return new ArrayList<>(userMap.values());
+       return postRepository.findByUserIdIn(userIds)
+                .stream().collect(Collectors.groupingBy(post -> post.getUser().getId()))
+                .entrySet().stream()
+               .map(entry -> new UserDTO(entry.getKey(),
+                        entry.getValue().get(0).getUser().getFullName(),
+                        entry.getValue())).collect(Collectors.toList());
     }
 }
