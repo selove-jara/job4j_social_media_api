@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.social.media.api.dto.UserDTO;
 import ru.job4j.social.media.api.model.Post;
@@ -35,6 +36,7 @@ public class PostsController {
             @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
     @GetMapping
+    @Secured("ROLE_USER")
     @ResponseStatus(HttpStatus.OK)
     public List<Post> getAll() {
         return postService.findAll();

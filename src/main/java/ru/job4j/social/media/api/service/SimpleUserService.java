@@ -1,5 +1,6 @@
 package ru.job4j.social.media.api.service;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.job4j.social.media.api.model.User;
 import ru.job4j.social.media.api.repository.UserRepository;
@@ -8,13 +9,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class SimpleUserService implements UserService {
 
     private final UserRepository userRepository;
-
-    public SimpleUserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     @Override
     public User save(User user) {
@@ -44,6 +42,7 @@ public class SimpleUserService implements UserService {
         return false;
     }
 
+    @Override
     public List<User> findAll() {
         return userRepository.findAll();
     }

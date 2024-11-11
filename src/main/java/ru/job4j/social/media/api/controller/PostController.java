@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.job4j.social.media.api.model.Post;
@@ -32,6 +33,7 @@ public class PostController {
             @ApiResponse(responseCode = "200", content = { @Content(schema = @Schema(implementation = Post.class), mediaType = "application/json") }),
             @ApiResponse(responseCode = "404", description = "Post not found", content = @Content)
     })
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/{postId}")
     public ResponseEntity<Post> get(@PathVariable("postId") int userId) {
         return postService.findById(userId)
@@ -48,6 +50,7 @@ public class PostController {
             @ApiResponse(responseCode = "201", description = "Post created successfully", content = { @Content(schema = @Schema(implementation = Post.class), mediaType = "application/json") }),
             @ApiResponse(responseCode = "400", description = "Invalid Post data", content = @Content)
     })
+    @PreAuthorize("hasRole('ADMIN') or hasRole('MODERATOR')")
     @PostMapping
     public ResponseEntity<Post> save(@Valid @RequestBody Post post) {
         postService.save(post);
@@ -69,6 +72,7 @@ public class PostController {
             @ApiResponse(responseCode = "200", description = "Post updated successfully", content = @Content),
             @ApiResponse(responseCode = "404", description = "Post not found", content = @Content)
     })
+    @PreAuthorize("hasRole('ADMIN') or hasRole('MODERATOR')")
     @PutMapping
     public ResponseEntity<Void> update(@Valid @RequestBody Post post) {
         if (postService.update(post)) {
@@ -91,6 +95,7 @@ public class PostController {
             @ApiResponse(responseCode = "204", description = "Post deleted successfully", content = @Content),
             @ApiResponse(responseCode = "404", description = "Post not found", content = @Content)
     })
+    @PreAuthorize("hasRole('ADMIN') or hasRole('MODERATOR')")
     @DeleteMapping("/{postId}")
     public ResponseEntity<Void> removeById(@PathVariable int postId) {
         if (postService.deleteById(postId)) {

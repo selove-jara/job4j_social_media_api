@@ -11,3 +11,9 @@ databaseChangeLog:
       file: "db/changelog/scripts/005_ddl_create_table_messages.sql"
   - include:
       file: "db/changelog/scripts/006_ddl_create_table_subscriptions.sql"
+  - include:
+      file: "db/changelog/scripts/007_ddl_create_table_roles.sql"
+  - include:
+      file: "db/changelog/scripts/008_ddl_create_table_users_roles.sql"
+  - include:
+      file: "db/changelog/scripts/009_dml_insert_role.sql"

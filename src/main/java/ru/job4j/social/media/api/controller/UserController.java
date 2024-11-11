@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.job4j.social.media.api.model.User;
@@ -50,6 +51,7 @@ public class UserController {
                 .body(user);
     }
 
+    @PreAuthorize("hasRole('USER') and #userId == authentication.principal.id")
     @PutMapping
     public ResponseEntity<Void> update(@Valid @RequestBody User user) {
         if (userService.update(user)) {
@@ -64,6 +66,7 @@ public class UserController {
         userService.update(user);
     }
 
+    @PreAuthorize("hasRole('USER') and #userId == authentication.principal.id")
     @DeleteMapping("/{userId}")
     public ResponseEntity<Void> removeById(@PathVariable int userId) {
         if (userService.deleteById(userId)) {

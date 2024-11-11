@@ -8,8 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.job4j.social.media.api.model.Subscription;
 import ru.job4j.social.media.api.model.User;
+import ru.job4j.social.media.api.security.models.ERole;
+import ru.job4j.social.media.api.security.models.Role;
+import ru.job4j.social.media.api.security.repository.RoleRepository;
 
 import java.time.LocalDateTime;
+import java.util.Set;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -19,17 +24,27 @@ class SubscriptionRepositoryTest {
     private SubscriptionRepository subscriptionRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private RoleRepository roleRepository;
+
+    @BeforeEach
+    public void setUpRoles() {
+        roleRepository.findByName(ERole.ROLE_USER)
+                .orElseGet(() -> roleRepository.save(new Role(null, ERole.ROLE_USER)));
+    }
 
     @AfterEach
     public void setUp() {
         subscriptionRepository.deleteAll();
         userRepository.deleteAll();
+        roleRepository.deleteAll();
     }
 
     @Test
     public void whenSaveSubscriptionThenFindById() {
-        var follower = userRepository.save(new User(0, "Follower", "follower@test.com", "pass", "UTC"));
-        var following = userRepository.save(new User(0, "Following", "following@test.com", "pass", "UTC"));
+        var userRole = roleRepository.findByName(ERole.ROLE_USER).orElseThrow();
+        var follower = userRepository.save(new User(0, "Follower", "follower@test.com", "pass", "UTC", Set.of(userRole)));
+        var following = userRepository.save(new User(0, "Following", "following@test.com", "pass", "UTC", Set.of(userRole)));
         var subscription = new Subscription(0, follower, following, LocalDateTime.now(), false, false);
         subscriptionRepository.save(subscription);
 
@@ -41,8 +56,9 @@ class SubscriptionRepositoryTest {
 
     @Test
     public void whenSaveSubscriptionAndDeleteThenNotFound() {
-        var follower = userRepository.save(new User(0, "Follower", "follower@test.com", "pass", "UTC"));
-        var following = userRepository.save(new User(0, "Following", "following@test.com", "pass", "UTC"));
+        var userRole = roleRepository.findByName(ERole.ROLE_USER).orElseThrow();
+        var follower = userRepository.save(new User(0, "Follower", "follower@test.com", "pass", "UTC", Set.of(userRole)));
+        var following = userRepository.save(new User(0, "Following", "following@test.com", "pass", "UTC", Set.of(userRole)));
         var subscription = new Subscription(0, follower, following, LocalDateTime.now(), false, false);
         subscriptionRepository.save(subscription);
 
